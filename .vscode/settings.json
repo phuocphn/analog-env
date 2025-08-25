@@ -104,6 +104,11 @@
         "unordered_set": "cpp",
         "variant": "cpp",
         "shared_mutex": "cpp",
-        "any": "cpp"
-    }
+        "any": "cpp",
+        "*.inc": "cpp",
+        "regex": "cpp",
+        "forward_list": "cpp",
+        "valarray": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
