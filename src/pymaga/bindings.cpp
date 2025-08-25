@@ -196,22 +196,47 @@ PYBIND11_MODULE(pymaga, m) {
         .def(py::init<const Synthesis::DeviceLevel&>())
         .def("__repr__", [](Synthesis::DifferentialPair &self) {
             return self.toStr();
-        });
+        })
+        .def("getDifferentialPairPmos", [](Synthesis::DifferentialPair &self) {
+            return self.getDifferentialPairPmos();
+        })
+        .def("getDifferentialPairNmos", [](Synthesis::DifferentialPair &self) {
+            return self.getDifferentialPairNmos();
+        })        
+        ;
     py::class_<Synthesis::CurrentBiases>(m, "CurrentBiases")
         .def(py::init<const Synthesis::DeviceLevel&>())
         .def("__repr__", [](Synthesis::CurrentBiases &self) {
             return self.toStr();
-        });
+        })
+        .def("getAllCurrentBiasesPmos", [](Synthesis::CurrentBiases &self) {
+            return self.getAllCurrentBiasesPmos();
+        })
+        .def("getAllCurrentBiasesNmos", [](Synthesis::CurrentBiases &self) {
+            return self.getAllCurrentBiasesNmos();
+        })
+        ;
     py::class_<Synthesis::VoltageBiases>(m, "VoltageBiases")
         .def(py::init<const Synthesis::DeviceLevel&>())
         .def("__repr__", [](Synthesis::VoltageBiases &self) {
             return self.toStr();
-        });
+        })
+        .def("getAllVoltageBiasesPmos", [](Synthesis::VoltageBiases &self) {
+            return self.getAllVoltageBiasesPmos();
+        })
+        .def("getAllVoltageBiasesNmos", [](Synthesis::VoltageBiases &self) {
+            return self.getAllVoltageBiasesNmos();
+        })        
+        ;
     py::class_<Synthesis::AnalogInverters>(m, "AnalogInverters")
         .def(py::init<Synthesis::StructuralLevel&>())
         .def("__repr__", [](Synthesis::AnalogInverters &self) {
             return self.toStr();
-        });
+        })
+        .def("getAnalogInverters", [](Synthesis::AnalogInverters &self) {
+            return self.getAnalogInverters();
+        }, py::return_value_policy::reference_internal)
+        ;
 
 
     // level 3
