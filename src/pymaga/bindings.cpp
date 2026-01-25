@@ -196,22 +196,47 @@ PYBIND11_MODULE(pymaga, m) {
         .def(py::init<const Synthesis::DeviceLevel&>())
         .def("__repr__", [](Synthesis::DifferentialPair &self) {
             return self.toStr();
-        });
+        })
+        .def("getDifferentialPairPmos", [](Synthesis::DifferentialPair &self) {
+            return self.getDifferentialPairPmos();
+        })
+        .def("getDifferentialPairNmos", [](Synthesis::DifferentialPair &self) {
+            return self.getDifferentialPairNmos();
+        })        
+        ;
     py::class_<Synthesis::CurrentBiases>(m, "CurrentBiases")
         .def(py::init<const Synthesis::DeviceLevel&>())
         .def("__repr__", [](Synthesis::CurrentBiases &self) {
             return self.toStr();
-        });
+        })
+        .def("getAllCurrentBiasesPmos", [](Synthesis::CurrentBiases &self) {
+            return self.getAllCurrentBiasesPmos();
+        })
+        .def("getAllCurrentBiasesNmos", [](Synthesis::CurrentBiases &self) {
+            return self.getAllCurrentBiasesNmos();
+        })
+        ;
     py::class_<Synthesis::VoltageBiases>(m, "VoltageBiases")
         .def(py::init<const Synthesis::DeviceLevel&>())
         .def("__repr__", [](Synthesis::VoltageBiases &self) {
             return self.toStr();
-        });
+        })
+        .def("getAllVoltageBiasesPmos", [](Synthesis::VoltageBiases &self) {
+            return self.getAllVoltageBiasesPmos();
+        })
+        .def("getAllVoltageBiasesNmos", [](Synthesis::VoltageBiases &self) {
+            return self.getAllVoltageBiasesNmos();
+        })        
+        ;
     py::class_<Synthesis::AnalogInverters>(m, "AnalogInverters")
         .def(py::init<Synthesis::StructuralLevel&>())
         .def("__repr__", [](Synthesis::AnalogInverters &self) {
             return self.toStr();
-        });
+        })
+        .def("getAnalogInverters", [](Synthesis::AnalogInverters &self) {
+            return self.getAnalogInverters();
+        }, py::return_value_policy::reference_internal)
+        ;
 
 
     // level 3
@@ -229,6 +254,54 @@ PYBIND11_MODULE(pymaga, m) {
 
     py::class_<Synthesis::LoadParts>(m, "LoadParts")
         .def(py::init<const Synthesis::StructuralLevel&>())
+        .def("createTwoTransistorsLoadPartsLoadPartsPmosVoltageBiases", [](Synthesis::LoadParts &self) {
+            return self.createTwoTransistorsLoadPartsLoadPartsPmosVoltageBiases();
+        })
+        .def("createFourTransistorsLoadPartsLoadPartsPmosVoltageBiases", [](Synthesis::LoadParts &self) {
+            return self.createFourTransistorsLoadPartsLoadPartsPmosVoltageBiases();
+        })
+        .def("createTwoTransistorsLoadPartsLoadPartsNmosVoltageBiases", [](Synthesis::LoadParts &self) {
+            return self.createTwoTransistorsLoadPartsLoadPartsNmosVoltageBiases();
+        })
+        .def("createFourTransistorsLoadPartsLoadPartsNmosVoltageBiases", [](Synthesis::LoadParts &self) {
+            return self.createFourTransistorsLoadPartsLoadPartsNmosVoltageBiases();
+        })
+        .def("createLoadPartsPmosTwoTransistorCurrentBiasesDifferentSources", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsPmosTwoTransistorCurrentBiasesDifferentSources();
+        })
+        .def("createLoadPartsNmosTwoTransistorCurrentBiasesDifferentSources", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsNmosTwoTransistorCurrentBiasesDifferentSources();
+        })
+        .def("createLoadPartsPmosFourTransistorCurrentBiases", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsPmosFourTransistorCurrentBiases();
+        })
+        .def("createLoadPartsNmosFourTransistorCurrentBiases", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsNmosFourTransistorCurrentBiases();
+        })
+        .def("createLoadPartsPmosCurrentBiases", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsPmosCurrentBiases();
+        })
+        .def("createLoadPartsNmosCurrentBiases", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsNmosCurrentBiases();
+        })
+        .def("createLoadPartsPmosVoltageBiases", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsPmosVoltageBiases();
+        })
+        .def("createLoadPartsNmosVoltageBiases", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsNmosVoltageBiases();
+        })
+        .def("createLoadPartsPmosMixed", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsPmosMixed();
+        })
+        .def("createLoadPartsNmosMixed", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsNmosMixed();
+        })
+        .def("createLoadPartsPmosFourTransistorMixed", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsPmosFourTransistorMixed();
+        })
+        .def("createLoadPartsNmosFourTransistorMixed", [](Synthesis::LoadParts &self) {
+            return self.createLoadPartsNmosFourTransistorMixed();
+        })
         .def("__repr__", [](Synthesis::LoadParts &self) {
             return self.toStr();
         });
