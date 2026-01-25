@@ -5,34 +5,6 @@ from loguru import logger
 from utils import get_circuit_tree
 
 
-def synthesis_level2():
-    if True:
-        circuitInformation = pymaga.CircuitInformation()
-        circuitParameter = pymaga.CircuitParameter()
-
-        # set diffential amplifiers
-        circuitParameter.setFullyDifferential(True)
-        circuitInformation.setCircuitParameter(circuitParameter)
-    else:
-        circuitInformation = pymaga.CircuitInformation().init()
-
-    # Initialize HL1
-    deviceLevel = pymaga.DeviceLevel()
-
-    differentialpairs = pymaga.DifferentialPair(deviceLevel)
-    # print(differentialpairs)
-
-    currentbiases = pymaga.CurrentBiases(deviceLevel)
-    # print(currentbiases)
-
-    voltagebiases = pymaga.VoltageBiases(deviceLevel)
-    # print(voltagebiases)
-
-    structuralLevel = pymaga.StructuralLevel(deviceLevel, circuitInformation)
-    analoginverters = pymaga.AnalogInverters(structuralLevel)
-    print(analoginverters)
-
-
 def synthesis_level3():
     if True:
         circuitInformation = pymaga.CircuitInformation()
