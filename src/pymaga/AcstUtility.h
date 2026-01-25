@@ -34,7 +34,7 @@
 
 #include "Core/incl/Common/Object.h"
 #include <iostream>
-#include <gtest/gtest.h>
+// #include <gtest/gtest.h>
 #include <typeinfo>
 
 
