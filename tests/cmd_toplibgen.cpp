@@ -4,7 +4,6 @@
 #include "Core/incl/Common/Backtrace.h"
 #include "Synthesis/incl/TopologyLibraryGeneration.h"
 #include "Synthesis/incl/LocalOptionsTopologyLibraryGeneration.h"
-#include "Log/incl/LogMacros.h"
 
 int main(int argc, char *argv[]) {
 
