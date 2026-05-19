@@ -1,78 +1,53 @@
 #include <iostream>
+#include <chrono>
 
 #include "Core/incl/Common/Backtrace.h"
-#include "Control/incl/Control.h"
+#include "Synthesis/incl/TopologyLibraryGeneration.h"
+#include "Synthesis/incl/LocalOptionsTopologyLibraryGeneration.h"
 #include "Log/incl/LogMacros.h"
-#include <iostream>
-#include <time.h>
-#include <thread>
-#include <vector>
-#include <mutex>
 
 int main(int argc, char *argv[]) {
 
     try{
     	auto start = std::chrono::high_resolution_clock::now();
         Core::installBacktraceExceptionHandler();
-        Control::Control control;
+
+        // Prepare command-line arguments
+        int final_argc;
+        char** final_argv;
+        char* argv_default[3];
 
         if (argc == 1)
         { 
-            /* Enabling structuralreg consumes more memory usage, and should be disabled!
-            argc = 11;
-            char* argv_default[argc];
-
-            argv_default[0] = "acst";
-            argv_default[1] = "--log-level-console";
-            argv_default[2] = "DEBUG";
-
-            argv_default[3] = "--analysis";
-            argv_default[4] = "toplibgen";
-
-            // --xml-structrec-library-file {file path to acst}/acst/StructRec/xml/AnalogLibrary.xml 
-            argv_default[5] = "--xml-structrec-library-file";
-            argv_default[6] = "StructRec/xml/AnalogLibrary.xml";
-
-            // --device-types-file deviceTypes.xcat 
-            argv_default[7] = "--device-types-file";
-            argv_default[8] = "InputFileExamples/TopologyLibraryGeneration/deviceTypes.xcat";
-
-
-            // --HSPICE-netlist-dir InputFileExamples/TopologyLibraryGeneration/NetlistsWithLabels
-            argv_default[9] = "--HSPICE-netlist-dir";
-            argv_default[10] = "InputFileExamples/TopologyLibraryGeneration/NetlistsWithLabels";
-
-            */
-
-            /* synthesis w/o structural reg-realted settings */
-            argc = 7;
-            char* argv_default[argc];
-
-            argv_default[0] = "acst";
-            argv_default[1] = "--log-level-console";
-            argv_default[2] = "DEBUG";
-
-            argv_default[3] = "--analysis";
-            argv_default[4] = "toplibgen";
-
-            // --HSPICE-netlist-dir InputFileExamples/TopologyLibraryGeneration/NetlistsWithLabels
-            argv_default[5] = "--HSPICE-netlist-dir";
-            argv_default[6] = "outputs/TopologyGen";         
-            control.run(argc,argv_default);
-
+            // Use default arguments without Control framework overhead
+            final_argc = 3;
+            argv_default[0] = "cmd_toplibgen";
+            argv_default[1] = "--HSPICE-netlist-dir";
+            argv_default[2] = "outputs/TopologyGen-20260519";
+            final_argv = argv_default;
         }
         else
         {
-            control.run(argc,argv);
-
+            final_argc = argc;
+            final_argv = argv;
         }
+
+        // Directly instantiate and run TopologyLibraryGeneration without Control framework
+        Synthesis::LocalOptionsTopologyLibraryGeneration localOptions("Allowed options for topology library generation");
+        localOptions.parse(final_argc, final_argv);
+
+        Synthesis::TopologyLibraryGeneration analysis;
+        analysis.setLocalOptions(localOptions);
+        analysis.initialize();
+        analysis.compute();
+        analysis.write();
 
     	auto end = std::chrono::high_resolution_clock::now();
     	auto diff = end - start;
     	int timeHours = std::chrono::duration_cast<std::chrono::hours>(diff).count();
     	int timeMinutes = std::chrono::duration_cast<std::chrono::minutes>(diff).count() - timeHours * 60;
     	int timeSeconds = std::chrono::duration_cast<std::chrono::seconds>(diff).count() - timeHours * 3600 - timeMinutes * 60;
-    	logDebug("\n Program runtime: " << timeHours << "h " << timeMinutes <<"min " << timeSeconds << "s");
+    	std::cout << "\nProgram runtime: " << timeHours << "h " << timeMinutes << "min " << timeSeconds << "s" << std::endl;
         return 0;
     }
     catch(Core::BacktraceException* ex)
