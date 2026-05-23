@@ -154,11 +154,11 @@ namespace Synthesis {
 
 		createThreeStageOpAmps(*functionalBlockLibrary,*circuitParameter);
 
-		logDebug("Delete Circuit informations");
+		std::cout << "delete circuit information." << std::endl;
 		delete circuitInformation;
-		logDebug("Delete functional block library");
+		std::cout << "delete functional block library." << std::endl;
 		delete functionalBlockLibrary;
-		logDebug("Finish creating all op amps");
+		std::cout << "finish creating simple op amps for all cases." << std::endl;
 	}
 
 	void TopologyLibraryGeneration::createAllFullyDifferentialOpAmps()
@@ -287,6 +287,7 @@ namespace Synthesis {
 				delete &flatOneStageOpAmp;
 			}
 
+			std::cout << "case number: " << caseNumber << std::endl;
 			for(auto & symmetricalOpAmp : symmetricalOpAmps)
 			{
 				const Core::Circuit & flatSymmetricalOpAmp = createFlatCircuit(*symmetricalOpAmp);
@@ -294,7 +295,7 @@ namespace Synthesis {
 				delete symmetricalOpAmp;
 				delete &flatSymmetricalOpAmp;
 			}
-
+			std::cout << "finished writing HSpice files for case number: " << caseNumber << std::endl;
 
 			caseNumber ++;
 			// break;
@@ -304,7 +305,7 @@ namespace Synthesis {
 			// delete twoStageOpAmps;
 			// delete threeStageOpAmps;
 		} while (!oneStageOpAmps.empty() || !symmetricalOpAmps.empty());
-
+		std::cout << "finished creating op amps for all cases." << std::endl;
 	}
 
 	void TopologyLibraryGeneration::createThreeStageOpAmps(const FunctionalBlockLibrary & library, const AutomaticSizing::CircuitParameter & circuitParameter)
