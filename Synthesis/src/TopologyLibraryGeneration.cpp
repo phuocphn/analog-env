@@ -211,6 +211,15 @@ namespace Synthesis {
 
 		do
 		{
+			// if (caseNumber <= 8)
+			// {
+			// 	std::cout << "case number: " << caseNumber << " is skipped." << std::endl;
+			// 	caseNumber++;
+			// 	// set oneStageOpAmps to non-empty vector to avoid creating op-amps for this case number
+			// 	oneStageOpAmps.push_back(nullptr);
+			// 	continue;
+			// }
+			
 			if (circuitParameter.isComplementary())
 			{
 				oneStageOpAmps = library.getOpAmps().createComplementaryOpAmps(caseNumber, indexComplementary);
@@ -234,8 +243,15 @@ namespace Synthesis {
 			{
 				const Core::Circuit & flatOneStageOpAmp = createFlatCircuit(*oneStageOpAmp);
 				std::cout << "case number: " << caseNumber << ", one stage op amp id: "  << std::endl;
-				writeHSpiceFile(flatOneStageOpAmp, circuitParameter);
 
+				// if (flatOneStageOpAmp.getCircuitIdentifier().getId() < 151)
+				// {
+				// 	std::cout << "case number: " << caseNumber << ", one stage op amp id: " << flatOneStageOpAmp.getCircuitIdentifier().getId() << std::endl;
+				// 	std::cout << "skipped writing HSpice file for this op amp." << std::endl;
+				// 	continue;
+				// }
+
+				writeHSpiceFile(flatOneStageOpAmp, circuitParameter);
 				if(!circuitParameter.isComplementary())
 				{
 					std::vector<const Core::Circuit*> twoStageOpAmps;
@@ -250,7 +266,6 @@ namespace Synthesis {
 					
 					for(auto & twoStageOpAmp : twoStageOpAmps)
 					{
-
 						std::ostringstream oneStageOpAmpId;
 						oneStageOpAmpId << oneStageOpAmp->getCircuitIdentifier().getId();
 						const Core::Circuit & flatTwoStageOpAmp = createFlatCircuit(*twoStageOpAmp);
@@ -352,6 +367,12 @@ namespace Synthesis {
 				// writeHSpiceFile(flatOneStageOpAmp, circuitParameter);
 				std::ostringstream oneStageOpAmpId;
 				oneStageOpAmpId << oneStageOpAmp->getCircuitIdentifier().getId();
+				// if (flatOneStageOpAmp.getCircuitIdentifier().getId() < 15)
+				// {
+				// 	std::cout << "case number: " << caseNumber << ", one stage op amp id: " << flatOneStageOpAmp.getCircuitIdentifier().getId() << std::endl;
+				// 	std::cout << "skipped writing HSpice file for this op amp." << std::endl;
+				// 	continue;
+				// }
 				if(!circuitParameter.isComplementary())
 				{
 					std::vector<const Core::Circuit*> twoStageOpAmps;
