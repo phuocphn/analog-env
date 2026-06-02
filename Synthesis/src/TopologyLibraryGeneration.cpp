@@ -169,10 +169,10 @@ namespace Synthesis {
 		circuitParameter->setFullyDifferential(true);
 		circuitInformation->setCircuitParameter(*circuitParameter);
 
-		logDebug("Create functional block library fully differential op amps");
+		std::cout << "Create functional block library fully differential op amps" << std::endl;
 		FunctionalBlockLibrary * functionalBlockLibrary = new FunctionalBlockLibrary(*circuitInformation);
 
-		logDebug("Create fully differential op amps");
+		std::cout << "Create fully differential op amps" << std::endl;
 		createThreeStageOpAmps(*functionalBlockLibrary,*circuitParameter);
 
 		delete circuitInformation;
