@@ -43,7 +43,7 @@ add_executable(cmd_structure_recognition cmd_structure_recognition.cpp)
 target_link_libraries(cmd_structure_recognition GTest::gtest_main Log Control ManagedComponents boost_program_options.a rt ) 
 
 add_executable(cmd_toplibgen cmd_toplibgen.cpp)
-target_link_libraries(cmd_toplibgen GTest::gtest_main Log Control ManagedComponents boost_program_options.a rt ) 
+target_link_libraries(cmd_toplibgen GTest::gtest_main Log Synthesis StructRec Partitioning AutomaticSizing Control ManagedComponents boost_program_options.a rt ) 
 
 add_executable(cmd_automaticsizing cmd_automaticsizing.cpp)
 target_link_libraries(cmd_automaticsizing GTest::gtest_main Log Control ManagedComponents boost_program_options.a rt ) 

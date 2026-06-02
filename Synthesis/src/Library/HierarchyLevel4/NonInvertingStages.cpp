@@ -380,7 +380,8 @@ namespace Synthesis {
 			break;
 		}
 		default: {
-			logDebug("default");
+			nonInvertingStages.clear();
+			// logDebug("default");
 			break;
 		}
 		}
