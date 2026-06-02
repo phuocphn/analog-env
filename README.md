@@ -41,21 +41,22 @@ m6  net5  in1 net4  gnd!  nmos
 .end FD_Symmetry
 ```
 
+# Notes
 
+- Currently, there are two methods for creating three-stage opamps. When we use `cmd_toplibgen` for topology generation, pay attention to the following method in TopologyLibraryGeneration.cpp
 ```
-valgrind --leak-check=full \
-         --show-leak-kinds=all \
-         --track-origins=yes \
-         --verbose \
-         --log-file=valgrind-out.txt \
-         ./executable exampleParam1
-
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/thirdparty_libs/gecode-release-6.2.0"
-export PYTHONPATH=/mnt/home/pham/code/maga/build/src/pymaga:$PYTHONPATH
+    void TopologyLibraryGeneration::compute()
+    {
+		createAllSimpleOpAmps();
+		// createAllFullyDifferentialOpAmps();
+		// createAllComplementaryOpAmps();
+    }
 ```
 
-
-
+only uncomment types of opamps that we want to synthesis. Not enable them all as we may encounter memory leak.
+-  Inside these methods, check if `createOpAmps` or `createThreeStageOpAmps` is used for creating opamps. 
+    - The `createOpAmps` is the original implementation from **inga000/acst** and it uses `createSimpleThreeStageOpAmps`, `createFullyDifferentialThreeStageOpAmps` for creating three-stage opamps
+    - The `createThreeStageOpAmps` is our newly created method for mainly focusing on generating three-stage opamps, and it uses `createSimpleThreeStageOpAmps`, `createFullyDifferentialThreeStageOpAmps_2INV` for creating thre-stage opamps.
 
 # References
 - inga000/acst: acst - Analog Circuit Synthesis Tool https://github.com/inga000/acst
