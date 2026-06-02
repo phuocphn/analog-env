@@ -504,7 +504,7 @@ namespace Synthesis {
 
     std::vector<const Core::Circuit*> OpAmps::createFullyDifferentialThreeStageOpAmps(const Core::Circuit & oneStageOpAmp, const Core::Circuit & twoStageOpAmp)
     {
-        int impl_ver = 0;
+        int impl_ver = 1;
 
         std::vector<const Core::Circuit*> threeStageOpAmps;
 
@@ -512,6 +512,7 @@ namespace Synthesis {
             int index =1;
 
             const Core::Circuit & firstStage = oneStageOpAmp.findInstance(createInstanceId(FIRSTSTAGE_)).getMaster();
+            const Core::Circuit & secondStage = twoStageOpAmp.findInstance(createInstanceId(SECONDSTAGE_)).getMaster();
             const Core::Circuit & feedbackStage = oneStageOpAmp.findInstance(createInstanceId(FEEDBACKSTAGE_)).getMaster();
 
             for(auto & secondStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
@@ -528,11 +529,36 @@ namespace Synthesis {
                 index++;
                 }
             }
+        
+
             return threeStageOpAmps;
         }
 
         if (impl_ver == 1){
-            
+            int index =1;
+
+            const Core::Circuit & firstStage = oneStageOpAmp.findInstance(createInstanceId(FIRSTSTAGE_)).getMaster();
+            const Core::Circuit & secondStage = twoStageOpAmp.findInstance(createInstanceId(SECONDSTAGE_)).getMaster();
+            const Core::Circuit & feedbackStage = oneStageOpAmp.findInstance(createInstanceId(FEEDBACKSTAGE_)).getMaster();
+
+
+
+            for(auto & thridStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
+            {
+                const Core::Circuit & opAmp = createFullyDifferentialOpAmp_Ext3(index, 
+                                    createInstance(firstStage, FIRSTSTAGE_), createInstance(feedbackStage, FEEDBACKSTAGE_), 
+                                    &createInstance(secondStage, SECONDSTAGE1_), 
+                                    &createInstance(secondStage, SECONDSTAGE2_), 
+                                    &createInstance(*thridStage, THIRDSTAGE1_), 
+                                    &createInstance(*thridStage, THIRDSTAGE2_));
+                threeStageOpAmps.push_back(&opAmp);
+                index++;
+            }
+        
+
+            return threeStageOpAmps;
+
+
         }
         return threeStageOpAmps;
     }
