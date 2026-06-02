@@ -1635,7 +1635,7 @@ void Result::writeXmlPartitioningResult(Control::OutputFile & file)const
 
 	Core::XmlDocument doc;
 	Core::XmlNode & root = Core::RapidXmlUtils::createXMLRootNodeForResults(doc);
-	Core::RapidXmlUtils::writeDateXML(root, doc);
+	// Core::RapidXmlUtils::writeDateXML(root, doc);
 	Core::XmlNode & headLine = Core::RapidXmlUtils::addNode(root, doc, "circuit_partitioning_results");
 
 //	if(hasTransconductanceParts())
