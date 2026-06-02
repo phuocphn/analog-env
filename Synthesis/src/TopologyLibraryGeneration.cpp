@@ -152,7 +152,7 @@ namespace Synthesis {
 
 		FunctionalBlockLibrary * functionalBlockLibrary = new FunctionalBlockLibrary(*circuitInformation);
 
-		createThreeStageOpAmps(*functionalBlockLibrary,*circuitParameter);
+		createOpAmps(*functionalBlockLibrary,*circuitParameter);
 
 		std::cout << "delete circuit information." << std::endl;
 		delete circuitInformation;
@@ -173,7 +173,7 @@ namespace Synthesis {
 		FunctionalBlockLibrary * functionalBlockLibrary = new FunctionalBlockLibrary(*circuitInformation);
 
 		std::cout << "Create fully differential op amps" << std::endl;
-		createThreeStageOpAmps(*functionalBlockLibrary,*circuitParameter);
+		createOpAmps(*functionalBlockLibrary,*circuitParameter);
 
 		delete circuitInformation;
 		delete functionalBlockLibrary;
