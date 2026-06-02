@@ -233,6 +233,7 @@ namespace Synthesis {
 			for(auto & oneStageOpAmp : oneStageOpAmps)
 			{
 				const Core::Circuit & flatOneStageOpAmp = createFlatCircuit(*oneStageOpAmp);
+				std::cout << "case number: " << caseNumber << ", one stage op amp id: "  << std::endl;
 				writeHSpiceFile(flatOneStageOpAmp, circuitParameter);
 
 				if(!circuitParameter.isComplementary())
@@ -255,28 +256,29 @@ namespace Synthesis {
 						const Core::Circuit & flatTwoStageOpAmp = createFlatCircuit(*twoStageOpAmp);
 						writeHSpiceFile(flatTwoStageOpAmp, circuitParameter, oneStageOpAmpId.str());
 
-						std::vector<const Core::Circuit*> threeStageOpAmps;
-						if(circuitParameter.isFullyDifferential())
-						{
-							threeStageOpAmps = library.getOpAmps().createFullyDifferentialThreeStageOpAmps(*oneStageOpAmp, *twoStageOpAmp);
-						}
-						else
-						{
-							threeStageOpAmps = library.getOpAmps().createSimpleThreeStageOpAmps(*oneStageOpAmp, *twoStageOpAmp);
-						}
+						// std::vector<const Core::Circuit*> threeStageOpAmps;
+						// if(circuitParameter.isFullyDifferential())
+						// {
+						// 	threeStageOpAmps = library.getOpAmps().createFullyDifferentialThreeStageOpAmps(*oneStageOpAmp, *twoStageOpAmp);
+						// }
+						// else
+						// {
+						// 	threeStageOpAmps = library.getOpAmps().createSimpleThreeStageOpAmps(*oneStageOpAmp, *twoStageOpAmp);
+						// }
+						// std::cout << "#4" << std::endl;
 
-						for(auto & threeStageOpAmp : threeStageOpAmps)
-						{
+						// for(auto & threeStageOpAmp : threeStageOpAmps)
+						// {
 
-							std::ostringstream spiceFilePath;
-							spiceFilePath << oneStageOpAmpId.str() << "_" << twoStageOpAmp->getCircuitIdentifier().getId();
-							const Core::Circuit & flatThreeStageOpAmp = createFlatCircuit(*threeStageOpAmp);
-							writeHSpiceFile(flatThreeStageOpAmp, circuitParameter, spiceFilePath.str());
+						// 	std::ostringstream spiceFilePath;
+						// 	spiceFilePath << oneStageOpAmpId.str() << "_" << twoStageOpAmp->getCircuitIdentifier().getId();
+						// 	const Core::Circuit & flatThreeStageOpAmp = createFlatCircuit(*threeStageOpAmp);
+						// 	writeHSpiceFile(flatThreeStageOpAmp, circuitParameter, spiceFilePath.str());
 
-							delete threeStageOpAmp;
-							delete &flatThreeStageOpAmp;
+						// 	delete threeStageOpAmp;
+						// 	delete &flatThreeStageOpAmp;
 
-						}
+						// }
 						delete &flatTwoStageOpAmp;
 						delete twoStageOpAmp;
 					}
