@@ -109,6 +109,10 @@ public:
 	const Part & getPart(const Core::Device & device ) const;
 	TransconductancePart & getTransconductancePart(const StructRec::Structure & structure);
 	const TransconductancePart & getTransconductancePart(const StructRec::Structure & structure) const;
+
+	// Lookup by Part object (safe lookup by part id)
+	TransconductancePart & getTransconductancePart(const Part & part);
+	const TransconductancePart & getTransconductancePart(const Part & part) const;
 	BiasPart & getBiasPart(const StructRec::Structure & structure);
 	const BiasPart & getBiasPart(const StructRec::Structure & structure) const;
 	LoadPart & getLoadPart(const StructRec::Structure & structure);

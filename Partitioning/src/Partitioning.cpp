@@ -294,7 +294,11 @@ namespace Partitioning {
 
 					for(auto & component : getResult().getBelongingComponents(*secondStage))
 					{
-						if(component->getArray().findNet(StructRec::StructurePinType("MosfetNormalArray", "Source")).isSupply())
+						// Check if the component has the required pins before accessing them
+						if(component->getArray().hasPin(StructRec::StructurePinType("MosfetNormalArray", "Source")) &&
+						   component->getArray().hasPin(StructRec::StructurePinType("MosfetNormalArray", "Gate")) &&
+						   component->getArray().findNet(StructRec::StructurePinType("MosfetNormalArray", "Source")).isSupply())
+						// if(component->getArray().findNet(StructRec::StructurePinType("MosfetNormalArray", "Source")).isSupply())
 						{
 							netGatePin = &component->getArray().findNet(StructRec::StructurePinType("MosfetNormalArray", "Gate"));
 						}
@@ -2098,7 +2102,10 @@ namespace Partitioning {
 
 		if(stage.isTransconductancePart())
 		{
-			TransconductancePart & transconductance = getResult().getTransconductancePart(**stage.getMainStructures().begin());
+			// TransconductancePart & transconductance = getResult().getTransconductancePart(**stage.getMainStructures().begin());
+			TransconductancePart & transconductance = getResult().getTransconductancePart(stage);
+			// TransconductancePart & transconductance = *stage;
+
 			if(transconductance.isFirstStage())
 			{
 				hasConnection = hasFirstStageOutputConnection(net, circuits);

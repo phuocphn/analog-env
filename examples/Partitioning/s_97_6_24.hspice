@@ -1,0 +1,42 @@
+** Design view name: schematic
+.GLOBAL vdd! gnd!
+
+.TEMP 25.0
+.OPTION
++    ARTIST=2
++    INGOLD=2
++    PARHIER=LOCAL
++    PSF=2
+
+** Library name: CascodeSymmetricalCMOSOTA
+** Cell name: cascodeSymmetricalCMOSOTA
+** View name: schematic
+c1 net1 out
+c2 net2 out
+m1 net3 net4 gnd! gnd! nmos
+m2 net5 ibias vdd! vdd! pmos
+m3 net4 ibias vdd! vdd! pmos
+m4 net6 net6 net7 net7 pmos
+m5 net7 net8 vdd! vdd! pmos
+m6 net1 net6 net8 net8 pmos
+m7 net8 net8 vdd! vdd! pmos
+m8 net6 net4 gnd! gnd! nmos
+m9 net1 net4 gnd! gnd! nmos
+m10 net9 ibias vdd! vdd! pmos
+m11 net6 in1 net9 net9 pmos
+m12 net1 in2 net9 net9 pmos
+c3 out gnd!
+m13 net10 net1 gnd! gnd! nmos
+m14 net10 net10 vdd! vdd! pmos
+m15 net2 net4 gnd! gnd! nmos
+m16 net2 net10 vdd! vdd! pmos
+m17 out net5 net11 net11 nmos
+m18 net11 net11 gnd! gnd! nmos
+m19 out net3 net12 net12 pmos
+m20 net12 net2 vdd! vdd! pmos
+m21 net5 net5 net13 net13 nmos
+m22 net13 net11 gnd! gnd! nmos
+m23 net4 net4 gnd! gnd! nmos
+m24 net3 net3 vdd! vdd! pmos
+m25 ibias ibias vdd! vdd! pmos
+.END
