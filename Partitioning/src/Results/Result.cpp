@@ -418,6 +418,18 @@ const TransconductancePart& Result::getTransconductancePart(
 	return * transPart;
 }
 
+TransconductancePart& Result::getTransconductancePart(const Part& part)
+{
+    assert(part.isTransconductancePart(), "Is not a transconductance part.");
+    return *transconductanceParts_.find(part.getPartId())->second;
+}
+
+const TransconductancePart& Result::getTransconductancePart(const Part& part) const
+{
+    assert(part.isTransconductancePart(), "Is not a transconductance part.");
+    return *transconductanceParts_.find(part.getPartId())->second;
+}
+
 BiasPart& Result::getBiasPart(const StructRec::Structure& structure)
 {
 	BiasPart * biasPart = NULL;
