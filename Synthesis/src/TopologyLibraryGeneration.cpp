@@ -152,6 +152,9 @@ namespace Synthesis {
 
 		FunctionalBlockLibrary * functionalBlockLibrary = new FunctionalBlockLibrary(*circuitInformation);
 
+		// switch to "createThreeStageOpAmps" to generate valid three-stage single-out opamps 
+		// with only two variants for the second stage 
+		// (the output is corresponding to s-3 directory in FUBOCO-gallery)
 		createOpAmps(*functionalBlockLibrary,*circuitParameter);
 
 		std::cout << "delete circuit information." << std::endl;
