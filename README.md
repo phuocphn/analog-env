@@ -44,7 +44,7 @@ m6  net5  in1 net4  gnd!  nmos
 # Notes
 
 - Currently, there are two methods for creating three-stage opamps. When we use `cmd_toplibgen` for topology generation, pay attention to the following method in TopologyLibraryGeneration.cpp
-```
+```c
     void TopologyLibraryGeneration::compute()
     {
 		createAllSimpleOpAmps();
@@ -57,6 +57,31 @@ only uncomment types of opamps that we want to synthesis. Not enable them all as
 -  Inside these methods, check if `createOpAmps` or `createThreeStageOpAmps` is used for creating opamps. 
     - The `createOpAmps` is the original implementation from **inga000/acst** and it uses `createSimpleThreeStageOpAmps`, `createFullyDifferentialThreeStageOpAmps` for creating three-stage opamps
     - The `createThreeStageOpAmps` is our newly created method for mainly focusing on generating three-stage opamps, and it uses `createSimpleThreeStageOpAmps`, `createFullyDifferentialThreeStageOpAmps_2INV` for creating thre-stage opamps.
+
+- When generating three-stage single-output opamps, update the `createOpAmps` in the following method to `createThreeStageOpAmps`
+```c
+	void TopologyLibraryGeneration::createAllSimpleOpAmps()
+	{
+		AutomaticSizing::CircuitInformation * circuitInformation = new AutomaticSizing::CircuitInformation;
+		AutomaticSizing::CircuitParameter * circuitParameter = new AutomaticSizing::CircuitParameter;
+
+		circuitInformation->setCircuitParameter(*circuitParameter);
+
+		FunctionalBlockLibrary * functionalBlockLibrary = new FunctionalBlockLibrary(*circuitInformation);
+
+		// switch to "createThreeStageOpAmps" to generate valid three-stage single-out opamps 
+		// with only two variants for the second stage 
+		// (the output is corresponding to s-3 directory in FUBOCO-gallery)
+		createOpAmps(*functionalBlockLibrary,*circuitParameter);
+
+		std::cout << "delete circuit information." << std::endl;
+		delete circuitInformation;
+		std::cout << "delete functional block library." << std::endl;
+		delete functionalBlockLibrary;
+		std::cout << "finish creating simple op amps for all cases." << std::endl;
+	}
+```
+
 
 # References
 - inga000/acst: acst - Analog Circuit Synthesis Tool https://github.com/inga000/acst
