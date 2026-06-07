@@ -389,23 +389,23 @@ namespace Synthesis {
         const Core::Circuit & firstStage = oneStageOpAmp.findInstance(createInstanceId(FIRSTSTAGE_)).getMaster();
 
         // const Core::Circuit & twoStageOpAmp: DON'T USE THIS
-        if (0)
-        {
-            for(auto & secondStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
-            {
-                for (auto & thirdStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
-                {
-                    for(auto & fourthStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
-                    {
-                        const Core::Circuit & opAmp = createSimpleOpAmp_2INV(index, createInstance(firstStage, FIRSTSTAGE_), &createInstance(*secondStage, SECONDSTAGE_), &createInstance(*thirdStage, THIRDSTAGE_), &createInstance(*fourthStage, FOURTHSTAGE_));
-                        threeStageOpAmps.push_back(&opAmp);
-                        index++;
-                        std::cout << "three-stage opamp index: " << index << std::endl;
-                    }
-                }
+        // if (0)
+        // {
+        //     for(auto & secondStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
+        //     {
+        //         for (auto & thirdStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
+        //         {
+        //             for(auto & fourthStage : getAmplificationStageLevel().getInvertingStages().getInvertingStages())
+        //             {
+        //                 const Core::Circuit & opAmp = createSimpleOpAmp_2INV(index, createInstance(firstStage, FIRSTSTAGE_), &createInstance(*secondStage, SECONDSTAGE_), &createInstance(*thirdStage, THIRDSTAGE_), &createInstance(*fourthStage, FOURTHSTAGE_));
+        //                 threeStageOpAmps.push_back(&opAmp);
+        //                 index++;
+        //                 std::cout << "three-stage opamp index: " << index << std::endl;
+        //             }
+        //         }
 
-            }
-        }
+        //     }
+        // }
 
         if (1)
         {
