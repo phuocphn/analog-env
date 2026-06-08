@@ -625,6 +625,73 @@ namespace Partitioning {
 				}
 			}
 
+			int ENABLE_UNVERIFIED_SOLUTION = 1; // Set to 1 to enable the fallback classification for non-inverting inverters, 0 to disable
+
+			// Fallback classification for non-inverting inverters based on output net
+			if (ENABLE_UNVERIFIED_SOLUTION && type == "unclassified" &&
+				(inverter->getIdentifier().getName().toStr() == "MosfetNmosNonInvertingInverter" ||
+				inverter->getIdentifier().getName().toStr() == "MosfetPmosNonInvertingInverter"))
+			{
+				const StructRec::StructurePinType outputPin = StructRec::StructurePinType(inverter->getStructureName().toStr(), "Output");
+				if (inverter->hasPin(outputPin))
+				{
+					const StructRec::StructureNet & outputNet = inverter->findNet(outputPin);
+					std::vector<const StructRec::Structure*> connectedToOutput = circuits.findConnectedStructures(outputNet.getIdentifier());
+					for (auto & connected : connectedToOutput)
+					{
+						bool useThisConnected = false;
+						Part * connectedPart = nullptr;
+
+						// Case 1: already classified
+						if (getResult().structureAlreadyClassified(*connected))
+						{
+							connectedPart = &getResult().getPart(*connected);
+							useThisConnected = (connectedPart->isTransconductancePart() || connectedPart->isLoadPart());
+						}
+						// Case 2: unclassified MosfetNormalArray with source to supply -> create LoadPart
+						else if (connected->getStructureName() == StructRec::StructureName("MosfetNormalArray"))
+						{
+							const StructRec::StructurePinType sourcePin = StructRec::StructurePinType("MosfetNormalArray", "Source");
+							if (connected->hasPin(sourcePin) && connected->findNet(sourcePin).isSupply())
+							{
+								LoadPart * newLoadPart = new LoadPart(getIdLoadPart());
+								newLoadPart->addMainStructure(*connected, getResult());
+								// newLoadPart->setType("outputLoad"); // optional
+								getResult().addLoadPart(*newLoadPart);
+								connectedPart = newLoadPart;
+								useThisConnected = true;
+								std::cout << "Created new LoadPart for unclassified transistor: " << connected->getIdentifier() << std::endl;
+							}
+						}
+
+						if (useThisConnected && connectedPart != nullptr)
+						{
+							std::cout << "Checking connected structure: " << connected->getIdentifier() << std::endl;
+							if (connectedPart->isLoadPart() ||
+								(connectedPart->isTransconductancePart() && getResult().getTransconductancePart(*connected).isFirstStage()))
+							{
+								std::cout << "Classifying as secondarySecondStage based on load or first stage connection." << std::endl;
+								type = "secondarySecondStage";
+								childNumberTransStruc = 1;   // adjust if needed
+								childNumberBiasStruc = 2;
+								break;
+							}
+							else if (connectedPart->isTransconductancePart() && getResult().getTransconductancePart(*connected).isPrimarySecondStage())
+							{
+								std::cout << "Classifying as thirdStage based on primary second stage connection." << std::endl;
+								type = "thirdStage";
+								childNumberTransStruc = 2;
+								childNumberBiasStruc = 1;
+								break;
+							}
+							else
+							{
+								std::cout << "Connected part is not load or first stage transconductance; keeping unclassified." << std::endl;
+							}
+						}
+					}
+				}
+			}
 			// If a valid child structure number is found, it initializes the inverter stage by calling initializeInverterStage with the appropriate child structures and type.
 			if ((inverter->getIdentifier().getName().toStr() == "MosfetNmosNonInvertingInverter" || inverter->getIdentifier().getName().toStr() ==  "MosfetPmosNonInvertingInverter" ) && type != "unclassified")
 			{
